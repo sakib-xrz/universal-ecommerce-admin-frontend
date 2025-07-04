@@ -247,7 +247,7 @@ export default function ManageStockModal({
         </form>
       )}
 
-      {!ariseForm && variants.length !== sizes.length && (
+      {!ariseForm && (
         <Button
           type="primary"
           className="mt-3 w-full"

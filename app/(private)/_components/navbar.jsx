@@ -26,9 +26,7 @@ import {
 } from "@/utils/constant";
 import { getUserInfo } from "@/utils/auth";
 import { useGetNotificationStatsQuery } from "@/redux/api/notificationApi";
-
-import { database } from "@/utils/firebase-config";
-import { ref, onValue } from "firebase/database";
+import useSocket from "@/hooks/use-socket";
 import { toast } from "sonner";
 import NotificationDrawer from "./notification-drawer";
 
@@ -71,40 +69,46 @@ export default function Navbar() {
     refetch,
   } = useGetNotificationStatsQuery();
 
+  const { isConnected, on, off } = useSocket();
   const isInitialLoad = useRef(true);
 
   useEffect(() => {
-    const notificationsRef = ref(database, "notifications");
+    if (!isConnected) return;
 
-    const unsubscribe = onValue(notificationsRef, (snapshot) => {
-      if (!snapshot.exists()) {
-        console.log("No new notifications.");
-        return;
-      }
-
-      const data = snapshot.val();
-      console.log("New Notification Data:", data);
+    const handleNewOrderNotification = (notificationData) => {
+      console.log("New order notification received:", notificationData);
 
       if (isInitialLoad.current) {
         isInitialLoad.current = false;
         refetch();
       } else {
+        // Refetch notification stats to update the count
         refetch();
+
+        // Play notification sound
         const audio = new Audio(notificationAudio);
         audio.play().catch((err) => {
           console.error("Audio playback failed:", err);
         });
 
+        // Show toast notification
         toast.message("New Order Placed", {
-          description: "A new order has been placed.",
+          description:
+            notificationData.message || "A new order has been placed.",
           position: "bottom-right",
           duration: 5000,
         });
       }
-    });
+    };
 
-    return () => unsubscribe();
-  }, []);
+    // Listen for new order notifications
+    on("newOrderNotification", handleNewOrderNotification);
+
+    // Cleanup on unmount or when connection changes
+    return () => {
+      off("newOrderNotification", handleNewOrderNotification);
+    };
+  }, [isConnected, on, off, refetch]);
 
   const notificationStats = notificationStatsData?.data;
 

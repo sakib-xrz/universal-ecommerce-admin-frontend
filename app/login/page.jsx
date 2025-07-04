@@ -10,7 +10,6 @@ import FormInput from "@/components/form/form-input";
 import userLogin from "@/utils/userLogin";
 import { useState } from "react";
 import { toast } from "sonner";
-import { useFcmToken } from "@/hooks/use-fcm-token";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -24,8 +23,8 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      email: "superadmin@letzgear.com",
-      password: "admin",
+      email: "superadmin@ecommerce.com",
+      password: "123456",
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {

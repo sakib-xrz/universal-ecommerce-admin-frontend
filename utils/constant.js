@@ -13,7 +13,6 @@ import Link from "next/link";
 
 export const ACCESS_TOKEN = "ACCESS_TOKEN";
 export const REFRESH_TOKEN = "REFRESH_TOKEN";
-export const FCM_TOKEN_KEY = "FCM_TOKEN";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 

@@ -1,6 +1,6 @@
 import setAccessToken from "@/actions/setAccessToken";
 import { storeUserInfo, getNewAccessToken } from "@/utils/auth";
-import { ACCESS_TOKEN, FCM_TOKEN_KEY } from "@/utils/constant";
+import { ACCESS_TOKEN } from "@/utils/constant";
 import { getFromLocalStorage } from "@/utils/localStorage";
 import axios from "axios";
 
@@ -14,14 +14,9 @@ axiosInstance.defaults.timeout = 100000;
 axiosInstance.interceptors.request.use(
   function (config) {
     const token = getFromLocalStorage(ACCESS_TOKEN);
-    const fcmToken = getFromLocalStorage(FCM_TOKEN_KEY);
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-    }
-
-    if (fcmToken) {
-      config.headers["FcmToken"] = fcmToken;
     }
 
     return config;
