@@ -1,0 +1,54 @@
+{
+  "name": "universal-ecommerce-admin-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "author": {
+    "name": "Md Sakibul Islam",
+    "email": "sakibul.islam0808@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sakib-xrz/universal-ecommerce-admin-frontend"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/charts": "^2.2.6",
+    "@ant-design/nextjs-registry": "^1.0.1",
+    "@eslint/config-array": "^0.19.2",
+    "@eslint/object-schema": "^2.1.6",
+    "@reduxjs/toolkit": "^2.3.0",
+    "antd": "^5.21.6",
+    "axios": "^1.7.7",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "formik": "^2.4.6",
+    "glob": "^11.0.1",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.454.0",
+    "next": "14.2.11",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-quill": "^2.0.0",
+    "react-redux": "^9.1.2",
+    "react-responsive": "^10.0.0",
+    "rimraf": "^6.0.1",
+    "sharp": "^0.33.5",
+    "sonner": "^1.7.0",
+    "tailwind-merge": "^2.5.4",
+    "use-debounce": "^10.0.4",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.21.0",
+    "eslint-config-next": "15.0.3",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.8",
+    "tailwindcss": "^3.4.1"
+  }
+}
