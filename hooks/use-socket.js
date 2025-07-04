@@ -13,7 +13,7 @@ const useSocket = () => {
     console.log("🔌 Attempting to connect to:", socketUrl);
 
     socketRef.current = io(socketUrl, {
-      forceNew: true, // Force a new connection
+      forceNew: true,
     });
 
     const socket = socketRef.current;

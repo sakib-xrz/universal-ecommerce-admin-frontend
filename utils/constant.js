@@ -7,6 +7,7 @@ import {
   Box,
   UsersRoundIcon,
   ShoppingBag,
+  Image,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -79,6 +80,7 @@ export const getSidebarItems = (role) => {
       getItem("Order List", "/super-admin/order"),
       getItem("Create Order", "/super-admin/order/add"),
     ]),
+    getItem("Banners", "/banner", <Image />),
   ];
 
   switch (role) {
