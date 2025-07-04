@@ -12,7 +12,7 @@ import {
 import { Bell, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import logo from "@/public/images/logo/logo.svg";
@@ -70,41 +70,27 @@ export default function Navbar() {
   } = useGetNotificationStatsQuery();
 
   const { isConnected, on, off } = useSocket();
-  const isInitialLoad = useRef(true);
 
   useEffect(() => {
     if (!isConnected) return;
 
     const handleNewOrderNotification = (notificationData) => {
-      console.log("New order notification received:", notificationData);
+      refetch();
 
-      if (isInitialLoad.current) {
-        isInitialLoad.current = false;
-        refetch();
-      } else {
-        // Refetch notification stats to update the count
-        refetch();
+      const audio = new Audio(notificationAudio);
+      audio.play().catch((err) => {
+        console.error("Audio playback failed:", err);
+      });
 
-        // Play notification sound
-        const audio = new Audio(notificationAudio);
-        audio.play().catch((err) => {
-          console.error("Audio playback failed:", err);
-        });
-
-        // Show toast notification
-        toast.message("New Order Placed", {
-          description:
-            notificationData.message || "A new order has been placed.",
-          position: "bottom-right",
-          duration: 5000,
-        });
-      }
+      toast.message("New Order Placed", {
+        description: notificationData.message || "A new order has been placed.",
+        position: "bottom-right",
+        duration: 5000,
+      });
     };
 
-    // Listen for new order notifications
     on("newOrderNotification", handleNewOrderNotification);
 
-    // Cleanup on unmount or when connection changes
     return () => {
       off("newOrderNotification", handleNewOrderNotification);
     };

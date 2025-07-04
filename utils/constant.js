@@ -1,4 +1,3 @@
-import { Badge } from "antd";
 import {
   LayoutDashboard,
   KeyRound,
@@ -15,8 +14,9 @@ export const ACCESS_TOKEN = "ACCESS_TOKEN";
 export const REFRESH_TOKEN = "REFRESH_TOKEN";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+export const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
 
-export const generateProfileDropdownOptions = (role) => {
+export const generateProfileDropdownOptions = () => {
   return [
     {
       key: `/profile`,
