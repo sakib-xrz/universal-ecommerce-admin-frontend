@@ -124,56 +124,56 @@ export default function Banner() {
           buttonText="Add Banner"
           onClick={() => setOpenCreateModal(true)}
         />
+
+        <Table
+          bordered
+          dataSource={dataSource}
+          columns={columns}
+          loading={isLoading}
+          pagination={false}
+          scroll={{
+            x: "max-content",
+          }}
+          rowKey={(record) => record.id}
+        />
+
+        <Modal
+          open={openDeleteModal}
+          title="Are you absolutely sure?"
+          icon={<></>}
+          closable={false}
+          footer={
+            <div className="flex items-center justify-end gap-2">
+              <Button
+                disabled={isDeleteLoading}
+                onClick={() => {
+                  setOpenDeleteModal(false);
+                  setId(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                danger
+                loading={isDeleteLoading}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            </div>
+          }
+          centered
+          destroyOnClose
+        >
+          This action cannot be undone. This banner will be permanently deleted
+          from our servers.
+        </Modal>
+
+        {openCreateModal && (
+          <CreateBanner open={openCreateModal} setOpen={setOpenCreateModal} />
+        )}
       </div>
-
-      <Table
-        bordered
-        dataSource={dataSource}
-        columns={columns}
-        loading={isLoading}
-        pagination={false}
-        scroll={{
-          x: "max-content",
-        }}
-        rowKey={(record) => record.id}
-      />
-
-      <Modal
-        open={openDeleteModal}
-        title="Are you absolutely sure?"
-        icon={<></>}
-        closable={false}
-        footer={
-          <div className="flex items-center justify-end gap-2">
-            <Button
-              disabled={isDeleteLoading}
-              onClick={() => {
-                setOpenDeleteModal(false);
-                setId(null);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              danger
-              loading={isDeleteLoading}
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-          </div>
-        }
-        centered
-        destroyOnClose
-      >
-        This action cannot be undone. This banner will be permanently deleted
-        from our servers.
-      </Modal>
-
-      {openCreateModal && (
-        <CreateBanner open={openCreateModal} setOpen={setOpenCreateModal} />
-      )}
     </div>
   );
 }

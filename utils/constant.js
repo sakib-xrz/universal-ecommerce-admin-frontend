@@ -9,6 +9,7 @@ import {
   ShoppingBag,
   Image,
   ListTree,
+  Settings,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -77,15 +78,16 @@ export const getSidebarItems = (role) => {
       getItem("Product List", "/super-admin/product"),
       getItem("Add Product", "/super-admin/product/add"),
     ]),
-    getItem("Orders", "/order", <ShoppingBag />, [
+    getItem("Orders", "order", <ShoppingBag />, [
       getItem("Order List", "/super-admin/order"),
       getItem("Create Order", "/super-admin/order/add"),
     ]),
-    getItem("Banners", "/super-admin/banner", <Image />),
-    getItem("Featured Categories", "/featured-category", <LayoutList />, [
+    getItem("Featured Categories", "featured-category", <LayoutList />, [
       getItem("Featured Category List", "/super-admin/featured-category"),
       getItem("Add Featured Category", "/super-admin/featured-category/add"),
     ]),
+    getItem("Banners", "/super-admin/banner", <Image />),
+    getItem("Settings", "/super-admin/settings", <Settings />),
   ];
 
   switch (role) {

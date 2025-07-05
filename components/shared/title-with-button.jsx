@@ -35,7 +35,7 @@ export default function TitleWithButton({
             <Button
               onClick={onClick}
               type="primary"
-              icon={icon && <PlusIcon />}
+              icon={icon && <PlusIcon size={16} className="text-white" />}
             >
               {buttonText}
             </Button>
@@ -46,7 +46,11 @@ export default function TitleWithButton({
         {buttonText ? (
           href ? (
             <Link href={href}>
-              <Button size="small" type="primary" icon={icon && <PlusIcon />}>
+              <Button
+                size="small"
+                type="primary"
+                icon={icon && <PlusIcon size={16} className="text-white" />}
+              >
                 {buttonText}
               </Button>
             </Link>
@@ -55,7 +59,7 @@ export default function TitleWithButton({
               size="small"
               onClick={onClick}
               type="primary"
-              icon={icon && <PlusIcon />}
+              icon={icon && <PlusIcon size={16} className="text-white" />}
             >
               {buttonText}
             </Button>
