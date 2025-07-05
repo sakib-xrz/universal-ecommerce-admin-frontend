@@ -8,6 +8,7 @@ import {
   UsersRoundIcon,
   ShoppingBag,
   Image,
+  ListTree,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -67,7 +68,7 @@ export const getSidebarItems = (role) => {
   const SUPER_ADMIN = [
     getItem("Dashboard", "/super-admin/dashboard", <LayoutDashboard />),
     getItem("Users", "/super-admin/user", <UsersRoundIcon />),
-    getItem("Categories", "category", <LayoutList />, [
+    getItem("Categories", "category", <ListTree />, [
       getItem("Category List", "/super-admin/category"),
       getItem("Add Category", "/super-admin/category/add"),
     ]),
@@ -80,7 +81,7 @@ export const getSidebarItems = (role) => {
       getItem("Order List", "/super-admin/order"),
       getItem("Create Order", "/super-admin/order/add"),
     ]),
-    getItem("Banners", "/banner", <Image />),
+    getItem("Banners", "/super-admin/banner", <Image />),
     getItem("Featured Categories", "/featured-category", <LayoutList />, [
       getItem("Featured Category List", "/super-admin/featured-category"),
       getItem("Add Featured Category", "/super-admin/featured-category/add"),

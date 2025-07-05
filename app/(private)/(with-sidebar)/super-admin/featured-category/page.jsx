@@ -7,12 +7,31 @@ import {
   useToggleFeaturedCategoryStatusMutation,
   useSortFeaturedCategoriesMutation,
 } from "@/redux/api/featuredCategoryApi";
-import { Breadcrumb, Table, Modal, Button, Switch, Tag } from "antd";
+import { Breadcrumb, Table, Modal, Button, Switch, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo, useContext } from "react";
 import { toast } from "sonner";
 import EditFeaturedCategoryModal from "./_components/edit-featured-category-modal";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import {
+  restrictToVerticalAxis,
+  restrictToWindowEdges,
+} from "@dnd-kit/modifiers";
+import DraggableRow, { DragHandleContext } from "./_components/draggable-row";
 
 const items = [
   {
@@ -23,28 +42,119 @@ const items = [
   },
 ];
 
+// Drag Handle Component
+const DragHandle = () => {
+  const dragHandlers = useContext(DragHandleContext);
+
+  return (
+    <div
+      className="flex cursor-grab justify-center active:cursor-grabbing"
+      {...dragHandlers}
+    >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M6 3C6 2.44772 5.55228 2 5 2C4.44772 2 4 2.44772 4 3C4 3.55228 4.44772 4 5 4C5.55228 4 6 3.55228 6 3Z"
+          fill="#9CA3AF"
+        />
+        <path
+          d="M12 3C12 2.44772 11.5523 2 11 2C10.4477 2 10 2.44772 10 3C10 3.55228 10.4477 4 11 4C11.5523 4 12 3.55228 12 3Z"
+          fill="#9CA3AF"
+        />
+        <path
+          d="M6 8C6 7.44772 5.55228 7 5 7C4.44772 7 4 7.44772 4 8C4 8.55228 4.44772 9 5 9C5.55228 9 6 8.55228 6 8Z"
+          fill="#9CA3AF"
+        />
+        <path
+          d="M12 8C12 7.44772 11.5523 7 11 7C10.4477 7 10 7.44772 10 8C10 8.55228 10.4477 9 11 9C11.5523 9 12 8.55228 12 8Z"
+          fill="#9CA3AF"
+        />
+        <path
+          d="M6 13C6 12.4477 5.55228 12 5 12C4.44772 12 4 12.4477 4 13C4 13.5523 4.44772 14 5 14C5.55228 14 6 13.5523 6 13Z"
+          fill="#9CA3AF"
+        />
+        <path
+          d="M12 13C12 12.4477 11.5523 12 11 12C10.4477 12 10 12.4477 10 13C10 13.5523 10.4477 14 11 14C11.5523 14 12 13.5523 12 13Z"
+          fill="#9CA3AF"
+        />
+      </svg>
+    </div>
+  );
+};
+
 export default function FeaturedCategory() {
   const { data, isLoading } = useGetFeaturedCategoriesQuery();
   const [deleteFeaturedCategory, { isLoading: isDeleteLoading }] =
     useDeleteFeaturedCategoryMutation();
   const [toggleFeaturedCategoryStatus, { isLoading: isToggleLoading }] =
     useToggleFeaturedCategoryStatusMutation();
+  const [sortFeaturedCategories, { isLoading: isSortLoading }] =
+    useSortFeaturedCategoriesMutation();
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editableItem, setEditableItem] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
 
-  const dataSource = data?.data || [];
+  // Sort data by sort_order for consistent display
+  const sortedData = useMemo(() => {
+    if (!data?.data) return [];
+    return [...data.data].sort(
+      (a, b) => (a.sort_order || 0) - (b.sort_order || 0),
+    );
+  }, [data?.data]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  const handleDragEnd = async (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = sortedData.findIndex((item) => item.id === active.id);
+      const newIndex = sortedData.findIndex((item) => item.id === over.id);
+
+      const newData = arrayMove(sortedData, oldIndex, newIndex);
+      const sortedIds = newData.map((item) => item.id);
+
+      try {
+        await sortFeaturedCategories(sortedIds).unwrap();
+        message.success("Featured categories sorted successfully");
+      } catch (error) {
+        console.error("Sort error:", error);
+        message.error("Failed to sort featured categories");
+      }
+    }
+  };
 
   const columns = [
     {
-      title: <div className="text-center">Sort Order</div>,
+      title: "Drag",
+      key: "drag",
+      width: 60,
+      render: () => <DragHandle />,
+    },
+    {
+      title: "Serial",
       key: "sort_order",
       render: (_text, record) => (
         <div className="text-center font-medium">{record.sort_order}</div>
       ),
       width: 150,
+      align: "center",
     },
     {
       title: "Title",
@@ -93,7 +203,7 @@ export default function FeaturedCategory() {
       ),
     },
     {
-      title: <div className="text-center">Banner</div>,
+      title: "Banner",
       key: "banner_url",
       render: (_text, record) => (
         <div className="text-center">
@@ -103,15 +213,19 @@ export default function FeaturedCategory() {
               alt={record.title}
               width={120}
               height={72}
+              className="h-12 w-auto rounded object-cover lg:h-10"
+              placeholder="blur"
+              blurDataURL={record.banner_url}
             />
           ) : (
             <span className="text-gray-400">No Banner</span>
           )}
         </div>
       ),
+      align: "center",
     },
     {
-      title: <div className="text-center">YouTube Video</div>,
+      title: "YouTube Video",
       key: "youtube_video_link",
       render: (_text, record) => (
         <div className="text-center">
@@ -129,6 +243,7 @@ export default function FeaturedCategory() {
           )}
         </div>
       ),
+      align: "center",
     },
     {
       title: <div className="text-center">Published</div>,
@@ -161,7 +276,7 @@ export default function FeaturedCategory() {
       title: "Action",
       key: "action",
       render: (_text, record) => (
-        <div className="flex space-x-4">
+        <div className="flex justify-center space-x-4">
           <p
             className="cursor-pointer text-info hover:underline"
             onClick={() => {
@@ -182,6 +297,7 @@ export default function FeaturedCategory() {
           </p>
         </div>
       ),
+      align: "center",
     },
   ];
 
@@ -206,17 +322,35 @@ export default function FeaturedCategory() {
           buttonText="Add Featured Category"
           href="/super-admin/featured-category/add"
         />
-        <Table
-          bordered
-          dataSource={dataSource}
-          columns={columns}
-          loading={isLoading}
-          pagination={false}
-          scroll={{
-            x: "max-content",
-          }}
-          rowKey="id"
-        />
+
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          modifiers={[restrictToVerticalAxis, restrictToWindowEdges]}
+        >
+          <SortableContext
+            items={sortedData.map((item) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <Table
+              bordered
+              dataSource={sortedData}
+              columns={columns}
+              loading={isLoading || isSortLoading}
+              pagination={false}
+              scroll={{
+                x: "max-content",
+              }}
+              rowKey="id"
+              components={{
+                body: {
+                  row: DraggableRow,
+                },
+              }}
+            />
+          </SortableContext>
+        </DndContext>
 
         <Modal
           open={openDeleteModal}
