@@ -10,6 +10,7 @@ import {
   Image,
   ListTree,
   Settings,
+  FileText,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -87,7 +88,11 @@ export const getSidebarItems = (role) => {
       getItem("Add Featured Category", "/super-admin/featured-category/add"),
     ]),
     getItem("Banners", "/super-admin/banner", <Image />),
-    getItem("Settings", "/super-admin/settings", <Settings />),
+    getItem("Static Pages", "static-page", <FileText />, [
+      getItem("Static Page List", "/super-admin/static-page"),
+      getItem("Add Static Page", "/super-admin/static-page/add"),
+    ]),
+    getItem("Settings", "/super-admin/setting", <Settings />),
   ];
 
   switch (role) {

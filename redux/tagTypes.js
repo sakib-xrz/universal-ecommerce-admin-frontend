@@ -10,6 +10,8 @@ export const tagTypes = {
   payment: "payment",
   banner: "banner",
   featuredCategory: "featuredCategory",
+  setting: "setting",
+  staticPage: "staticPage",
 };
 
 export const tagTypesList = [
@@ -24,4 +26,6 @@ export const tagTypesList = [
   tagTypes.payment,
   tagTypes.banner,
   tagTypes.featuredCategory,
+  tagTypes.setting,
+  tagTypes.staticPage,
 ];
