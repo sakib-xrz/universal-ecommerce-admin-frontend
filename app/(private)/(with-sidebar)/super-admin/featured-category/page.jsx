@@ -39,7 +39,7 @@ export default function FeaturedCategory() {
 
   const columns = [
     {
-      title: "Sort Order",
+      title: <div className="text-center">Sort Order</div>,
       key: "sort_order",
       render: (_text, record) => (
         <div className="text-center font-medium">{record.sort_order}</div>
@@ -93,7 +93,25 @@ export default function FeaturedCategory() {
       ),
     },
     {
-      title: "YouTube Video",
+      title: <div className="text-center">Banner</div>,
+      key: "banner_url",
+      render: (_text, record) => (
+        <div className="text-center">
+          {record.banner_url ? (
+            <Image
+              src={record.banner_url}
+              alt={record.title}
+              width={120}
+              height={72}
+            />
+          ) : (
+            <span className="text-gray-400">No Banner</span>
+          )}
+        </div>
+      ),
+    },
+    {
+      title: <div className="text-center">YouTube Video</div>,
       key: "youtube_video_link",
       render: (_text, record) => (
         <div className="text-center">
