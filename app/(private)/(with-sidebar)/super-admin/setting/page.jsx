@@ -8,7 +8,7 @@ import {
   useGetSettingQuery,
   useUpdateSettingMutation,
 } from "@/redux/api/settingApi";
-import { Breadcrumb, Button } from "antd";
+import { Breadcrumb, Button, Card, Input } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { useFormik } from "formik";
 import { ImageUp, Loader2 } from "lucide-react";
@@ -135,15 +135,67 @@ export default function Setting() {
   }
 
   return (
-    <div className="space-y-5 xl:mx-auto xl:max-w-5xl">
+    <div className="space-y-6 xl:mx-auto xl:max-w-7xl">
       <Breadcrumb items={items} />
 
-      <div className="space-y-3 sm:rounded-md sm:bg-white sm:p-6 sm:shadow lg:p-8">
+      <div className="space-y-6">
         <Title title={isEditing ? "Update Settings" : "Create Settings"} />
 
-        <form onSubmit={formik.handleSubmit} className="space-y-5">
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <form onSubmit={formik.handleSubmit} className="space-y-6">
+          {/* Logo Section */}
+          <Card title="Logo & Branding" className="shadow-sm">
             <div className="space-y-4">
+              <Label htmlFor="logo">
+                Company Logo{" "}
+                <small className="text-blue-600">
+                  (Recommended size: 230x45)
+                </small>
+              </Label>
+
+              {logoPreview && (
+                <div className="mb-4">
+                  <Image
+                    src={logoPreview}
+                    alt="Current logo"
+                    width={200}
+                    height={100}
+                    className="rounded border bg-gray-50 object-contain p-2"
+                  />
+                </div>
+              )}
+
+              <Dragger
+                maxCount={1}
+                multiple={false}
+                accept=".jpg,.jpeg,.png"
+                onChange={({ file }) => {
+                  if (file?.originFileObj) {
+                    formik.setFieldValue("logo", file.originFileObj);
+                    // Create preview
+                    const reader = new FileReader();
+                    reader.onload = (e) => setLogoPreview(e.target.result);
+                    reader.readAsDataURL(file.originFileObj);
+                  }
+                }}
+                fileList={[]}
+                className="max-w-md"
+              >
+                <p className="flex justify-center">
+                  <ImageUp className="size-8 opacity-70" />
+                </p>
+                <p className="ant-upload-text !mt-3">
+                  Click or drag file to this area to upload
+                </p>
+                <p className="ant-upload-hint !text-sm">
+                  Support only .jpg, .jpeg, .png file format.
+                </p>
+              </Dragger>
+            </div>
+          </Card>
+
+          {/* Basic Site Information */}
+          <Card title="Basic Site Information" className="shadow-sm">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <FormInput
                 label="Site Title"
                 name="title"
@@ -153,138 +205,132 @@ export default function Setting() {
               />
 
               <FormInput
-                label="Email"
-                name="email"
-                type="email"
-                placeholder="Enter email address"
+                label="Meta Keywords"
+                name="keywords"
+                placeholder="Enter meta keywords (comma separated)"
                 formik={formik}
                 required
               />
 
-              <FormInput
-                label="Phone"
-                name="phone"
-                placeholder="Enter phone number"
-                formik={formik}
-                required
-              />
+              <div className="space-y-4 lg:col-span-2">
+                <div className="space-y-1">
+                  <Label htmlFor="description" required>
+                    Meta Description
+                  </Label>
+                  <Input.TextArea
+                    name="description"
+                    placeholder="Enter meta description for SEO"
+                    {...formik.getFieldProps("description")}
+                    showCount
+                    maxLength={255}
+                    style={{
+                      height: 150,
+                      resize: "none",
+                      paddingBottom: 20,
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </Card>
 
+          {/* Contact Information */}
+          <Card title="Contact Information" className="shadow-sm">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <div className="space-y-4 lg:col-span-2">
+                <FormInput
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  placeholder="Enter business email address"
+                  formik={formik}
+                  required
+                />
+
+                <FormInput
+                  label="Phone Number"
+                  name="phone"
+                  placeholder="Enter phone number"
+                  formik={formik}
+                  required
+                />
+
+                <div className="space-y-4 lg:col-span-2">
+                  <Label htmlFor="address" required>
+                    Business Address
+                  </Label>
+                  <Input.TextArea
+                    name="address"
+                    placeholder="Enter full business address"
+                    {...formik.getFieldProps("address")}
+                    showCount
+                    maxLength={255}
+                    style={{
+                      height: 150,
+                      resize: "none",
+                      paddingBottom: 20,
+                    }}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Social Media Links */}
+          <Card title="Social Media Links" className="shadow-sm">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <FormInput
-                label="Facebook URL"
+                label="Facebook Page URL"
                 name="facebook"
-                placeholder="Enter Facebook URL"
+                placeholder="https://facebook.com/yourpage"
                 formik={formik}
               />
 
               <FormInput
-                label="Instagram URL"
+                label="Instagram Profile URL"
                 name="instagram"
-                placeholder="Enter Instagram URL"
+                placeholder="https://instagram.com/yourprofile"
                 formik={formik}
               />
             </div>
+          </Card>
 
-            <div className="space-y-4">
-              <FormInput
-                label="Address"
-                name="address"
-                placeholder="Enter full address"
-                formik={formik}
-                required
-              />
-
-              <FormInput
-                label="Meta Description"
-                name="description"
-                placeholder="Enter meta description"
-                formik={formik}
-                required
-              />
-
-              <FormInput
-                label="Meta Keywords"
-                name="keywords"
-                placeholder="Enter meta keywords"
-                formik={formik}
-                required
-              />
-
+          {/* Analytics & Tracking */}
+          <Card title="Analytics & Tracking" className="shadow-sm">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               <FormInput
                 label="Google Analytics ID"
                 name="google_analytics_id"
-                placeholder="Enter Google Analytics ID"
+                placeholder="GA-XXXXXXXXX-X"
                 formik={formik}
               />
 
               <FormInput
                 label="Google Tag Manager ID"
                 name="google_tag_manager_id"
-                placeholder="Enter Google Tag Manager ID"
+                placeholder="GTM-XXXXXXX"
                 formik={formik}
               />
 
               <FormInput
                 label="Facebook Pixel ID"
                 name="facebook_pixel_id"
-                placeholder="Enter Facebook Pixel ID"
+                placeholder="XXXXXXXXXXXXXXX"
                 formik={formik}
               />
             </div>
-          </div>
+          </Card>
 
-          <div className="space-y-1">
-            <Label htmlFor="logo">
-              Logo{" "}
-              <small className="text-blue-600">
-                (Recommended size: 400x200)
-              </small>
-            </Label>
-
-            {logoPreview && (
-              <div className="mb-4">
-                <Image
-                  src={logoPreview}
-                  alt="Current logo"
-                  width={200}
-                  height={100}
-                  className="rounded border object-contain"
-                />
-              </div>
-            )}
-
-            <Dragger
-              maxCount={1}
-              multiple={false}
-              accept=".jpg,.jpeg,.png"
-              onChange={({ file }) => {
-                if (file?.originFileObj) {
-                  formik.setFieldValue("logo", file.originFileObj);
-                  // Create preview
-                  const reader = new FileReader();
-                  reader.onload = (e) => setLogoPreview(e.target.result);
-                  reader.readAsDataURL(file.originFileObj);
-                }
-              }}
-              fileList={[]}
-            >
-              <p className="flex justify-center">
-                <ImageUp className="size-8 opacity-70" />
-              </p>
-              <p className="ant-upload-text !mt-3">
-                Click or drag file to this area to upload
-              </p>
-              <p className="ant-upload-hint !text-sm">
-                Support only .jpg, .jpeg, .png file format.
-              </p>
-            </Dragger>
-          </div>
-
-          <div className="flex justify-end">
+          {/* Submit Button */}
+          <div className="flex justify-end pt-4">
             <Button
               type="primary"
               htmlType="submit"
               loading={isCreateLoading || isUpdateLoading}
-              className="min-w-[120px]"
+              className="min-w-[140px]"
+              size="large"
             >
               {isEditing ? "Update Settings" : "Create Settings"}
             </Button>

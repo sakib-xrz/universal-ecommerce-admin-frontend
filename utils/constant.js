@@ -39,6 +39,14 @@ export const generateProfileDropdownOptions = () => {
       ),
     },
     {
+      key: "/super-admin/setting",
+      label: (
+        <Link href="/super-admin/setting" className="flex items-center gap-2">
+          <Settings className="size-5" /> Settings
+        </Link>
+      ),
+    },
+    {
       type: "divider",
     },
     {
@@ -87,11 +95,11 @@ export const getSidebarItems = (role) => {
       getItem("Featured Category List", "/super-admin/featured-category"),
       getItem("Add Featured Category", "/super-admin/featured-category/add"),
     ]),
-    getItem("Banners", "/super-admin/banner", <Image />),
     getItem("Static Pages", "static-page", <FileText />, [
       getItem("Static Page List", "/super-admin/static-page"),
       getItem("Add Static Page", "/super-admin/static-page/add"),
     ]),
+    getItem("Banners", "/super-admin/banner", <Image />),
     getItem("Settings", "/super-admin/setting", <Settings />),
   ];
 
