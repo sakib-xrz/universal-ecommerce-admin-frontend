@@ -7,6 +7,8 @@ import { getSidebarItems } from "@/utils/constant";
 import { Layout, Menu } from "antd";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
+import { Star } from "lucide-react";
 
 const { Content, Sider } = Layout;
 

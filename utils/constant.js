@@ -81,6 +81,10 @@ export const getSidebarItems = (role) => {
       getItem("Create Order", "/super-admin/order/add"),
     ]),
     getItem("Banners", "/banner", <Image />),
+    getItem("Featured Categories", "/featured-category", <LayoutList />, [
+      getItem("Featured Category List", "/super-admin/featured-category"),
+      getItem("Add Featured Category", "/super-admin/featured-category/add"),
+    ]),
   ];
 
   switch (role) {
