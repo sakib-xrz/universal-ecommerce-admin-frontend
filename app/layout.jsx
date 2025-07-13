@@ -29,17 +29,19 @@ async function getSettings() {
 export async function generateMetadata() {
   const settings = await getSettings();
 
+  console.log(settings);
+
   return {
     title: settings.title || "",
     description: settings.description || "",
     keywords: settings.keywords || "",
     icons: {
-      icon: settings.favicon || "",
+      icon: settings.favicon || "/favicon.ico",
     },
     openGraph: {
       title: settings.title || "",
       description: settings.description || "",
-      images: [settings.favicon || ""],
+      images: [settings.favicon || "/favicon.ico"],
     },
   };
 }

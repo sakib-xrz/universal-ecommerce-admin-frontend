@@ -232,7 +232,7 @@ export default function Dashboard() {
       title: "Action",
       key: "action",
       render: (_, record) => (
-        <Link href={`/super-admin/product/edit/${record.product.id}`}>
+        <Link href={`/super-admin/product?search=${record.product.sku}`}>
           <Button type="link" size="small" icon={<EditOutlined />}>
             Edit
           </Button>
