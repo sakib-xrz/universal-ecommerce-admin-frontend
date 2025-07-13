@@ -629,21 +629,13 @@ export default function Dashboard() {
                         Profit Margin
                       </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4">
                       <div className="text-center">
                         <div className="text-lg font-bold text-green-600">
                           {formatCurrency(profitData?.data?.total_profit || 0)}
                         </div>
                         <div className="text-sm text-gray-500">
                           Total Profit
-                        </div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-blue-600">
-                          {formatCurrency(profitData?.data?.total_revenue || 0)}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          Total Revenue
                         </div>
                       </div>
                     </div>
