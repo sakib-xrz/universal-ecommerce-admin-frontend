@@ -26,6 +26,30 @@ const dashboardApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getInventoryInsights: build.query({
+      query: () => ({
+        url: "/dashboard/inventory-insights",
+        method: "GET",
+      }),
+    }),
+    getTopPerformingProducts: build.query({
+      query: () => ({
+        url: "/dashboard/top-performing-products",
+        method: "GET",
+      }),
+    }),
+    getProfitAnalysis: build.query({
+      query: () => ({
+        url: "/dashboard/profit-analysis",
+        method: "GET",
+      }),
+    }),
+    getRecentActivity: build.query({
+      query: () => ({
+        url: "/dashboard/recent-activity",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -34,4 +58,8 @@ export const {
   useGetOrderAnalyticsQuery,
   useGetSalesAnalyticsQuery,
   useGetDashboardStatsQuery,
+  useGetInventoryInsightsQuery,
+  useGetTopPerformingProductsQuery,
+  useGetProfitAnalysisQuery,
+  useGetRecentActivityQuery,
 } = dashboardApi;
