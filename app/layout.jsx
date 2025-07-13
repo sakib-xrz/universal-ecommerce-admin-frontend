@@ -29,8 +29,6 @@ async function getSettings() {
 export async function generateMetadata() {
   const settings = await getSettings();
 
-  console.log(settings);
-
   return {
     title: settings.title || "",
     description: settings.description || "",
