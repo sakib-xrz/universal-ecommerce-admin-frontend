@@ -10,8 +10,6 @@ const useSocket = () => {
   useEffect(() => {
     const socketUrl = SOCKET_URL;
 
-    console.log("🔌 Attempting to connect to:", socketUrl);
-
     socketRef.current = io(socketUrl, {
       forceNew: true,
     });
@@ -19,13 +17,11 @@ const useSocket = () => {
     const socket = socketRef.current;
 
     socket.on("connect", () => {
-      console.log("✅ Socket connected successfully!");
       setIsConnected(true);
       setError(null);
     });
 
     socket.on("disconnect", (reason) => {
-      console.log("❌ Socket disconnected:", reason);
       setIsConnected(false);
     });
 

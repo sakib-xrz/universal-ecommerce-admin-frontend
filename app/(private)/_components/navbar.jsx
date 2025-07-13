@@ -29,12 +29,14 @@ import { useGetNotificationStatsQuery } from "@/redux/api/notificationApi";
 import useSocket from "@/hooks/use-socket";
 import { toast } from "sonner";
 import NotificationDrawer from "./notification-drawer";
+import { useSettings } from "@/utils/settings";
 
 const notificationAudio = "/audio/notification.mp3";
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
+  const settings = useSettings();
 
   const [open, setOpen] = useState(false);
   const [openNotification, setOpenNotification] = useState(false);
@@ -104,8 +106,10 @@ export default function Navbar() {
         <div className="flex items-center justify-between gap-2 xs:gap-5">
           <Link href={isLoading ? "#" : `/${role}/dashboard`}>
             <Image
-              src={logo}
-              alt=""
+              src={settings?.logo || logo}
+              alt={settings?.title || "Logo"}
+              width={200}
+              height={40}
               className="w-auto cursor-pointer max-xs:h-5 xs:h-8 sm:h-10"
               quality={100}
               loading="eager"

@@ -10,9 +10,11 @@ import FormInput from "@/components/form/form-input";
 import userLogin from "@/utils/userLogin";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useSettings } from "@/utils/settings";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+  const settings = useSettings();
 
   const loginSchema = Yup.object({
     email: Yup.string()
@@ -48,7 +50,7 @@ export default function Login() {
         <div className="w-full xs:w-8/12 lg:w-5/12">
           <Card className="w-full">
             <p className="pb-3 text-2xl font-semibold">
-              {`LET'Z GEAR ADMIN LOGIN`}
+              {`${settings?.title || "LET'Z GEAR"} ADMIN LOGIN`}
             </p>
             <form className="space-y-1" onSubmit={formik.handleSubmit}>
               <div className="space-y-2">

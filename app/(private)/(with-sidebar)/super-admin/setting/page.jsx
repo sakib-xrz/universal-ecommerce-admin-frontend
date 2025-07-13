@@ -54,15 +54,9 @@ export default function Setting() {
       logo: null,
     },
     validationSchema: Yup.object().shape({
-      address: Yup.string()
-        .required("Address is required")
-        .min(10, "Address must be at least 10 characters"),
-      phone: Yup.string()
-        .required("Phone is required")
-        .min(10, "Phone must be at least 10 characters"),
-      email: Yup.string()
-        .required("Email is required")
-        .email("Invalid email format"),
+      address: Yup.string().min(10, "Address must be at least 10 characters"),
+      phone: Yup.string().min(10, "Phone must be at least 10 characters"),
+      email: Yup.string().email("Invalid email format"),
       title: Yup.string()
         .required("Title is required")
         .min(5, "Title must be at least 5 characters"),
@@ -134,6 +128,8 @@ export default function Setting() {
     );
   }
 
+  console.log(formik.errors);
+
   return (
     <div className="space-y-6 xl:mx-auto xl:max-w-7xl">
       <Breadcrumb items={items} />
@@ -145,7 +141,7 @@ export default function Setting() {
           {/* Logo Section */}
           <Card title="Logo & Branding" className="shadow-sm">
             <div className="space-y-4">
-              <Label htmlFor="logo">
+              <Label htmlFor="logo" required>
                 Company Logo{" "}
                 <small className="text-blue-600">
                   (Recommended size: 230x45)
@@ -245,7 +241,6 @@ export default function Setting() {
                   type="email"
                   placeholder="Enter business email address"
                   formik={formik}
-                  required
                 />
 
                 <FormInput
@@ -253,13 +248,10 @@ export default function Setting() {
                   name="phone"
                   placeholder="Enter phone number"
                   formik={formik}
-                  required
                 />
 
                 <div className="space-y-4 lg:col-span-2">
-                  <Label htmlFor="address" required>
-                    Business Address
-                  </Label>
+                  <Label htmlFor="address">Business Address</Label>
                   <Input.TextArea
                     name="address"
                     placeholder="Enter full business address"
@@ -271,7 +263,6 @@ export default function Setting() {
                       resize: "none",
                       paddingBottom: 20,
                     }}
-                    required
                   />
                 </div>
               </div>
