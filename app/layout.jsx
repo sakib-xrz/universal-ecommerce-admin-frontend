@@ -34,12 +34,12 @@ export async function generateMetadata() {
     description: settings.description || "",
     keywords: settings.keywords || "",
     icons: {
-      icon: settings.logo || "",
+      icon: settings.favicon || "",
     },
     openGraph: {
       title: settings.title || "",
       description: settings.description || "",
-      images: [settings.logo || ""],
+      images: [settings.favicon || ""],
     },
   };
 }
