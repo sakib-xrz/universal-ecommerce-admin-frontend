@@ -1,6 +1,7 @@
 "use client";
 
 import FormInput from "@/components/form/form-input";
+import FormikErrorBox from "@/components/shared/formik-error-box";
 import Label from "@/components/shared/label";
 import Title from "@/components/shared/title";
 import {
@@ -136,6 +137,7 @@ export default function Setting() {
       </div>
     );
   }
+  console.log(formik.errors);
 
   return (
     <div className="space-y-6 xl:mx-auto xl:max-w-7xl">
@@ -318,6 +320,7 @@ export default function Setting() {
                     }}
                     required
                   />
+                  <FormikErrorBox formik={formik} name="description" />
                 </div>
               </div>
             </div>
