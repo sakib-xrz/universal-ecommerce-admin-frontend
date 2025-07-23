@@ -23,8 +23,8 @@ export default function Login() {
 
   const formik = useFormik({
     initialValues: {
-      email: "superadmin@ecommerce.com",
-      password: "123456",
+      email: "",
+      password: "",
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
