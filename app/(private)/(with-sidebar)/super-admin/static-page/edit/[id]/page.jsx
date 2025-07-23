@@ -22,7 +22,7 @@ import * as Yup from "yup";
 const kindOptions = [
   { value: "ABOUT_US", label: "About Us" },
   { value: "PRIVACY_POLICY", label: "Privacy Policy" },
-  { value: "TERMS_AND_CONDITIONS", label: "Terms and Conditions" },
+  { value: "SHIPPING_INFORMATION", label: "Shipping Information" },
 ];
 
 export default function EditStaticPage({ params }) {

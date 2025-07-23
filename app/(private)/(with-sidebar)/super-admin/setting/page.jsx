@@ -55,6 +55,8 @@ export default function Setting() {
       facebook_pixel_id: "",
       logo: null,
       favicon: null,
+      delivery_charge_inside_dhaka: "0",
+      delivery_charge_outside_dhaka: "0",
     },
     validationSchema: Yup.object().shape({
       address: Yup.string().min(10, "Address must be at least 10 characters"),
@@ -75,6 +77,8 @@ export default function Setting() {
         ? Yup.mixed().nullable()
         : Yup.mixed().required("Logo is required"),
       favicon: Yup.mixed().nullable(),
+      google_analytics_id: Yup.string().nullable(),
+      google_tag_manager_id: Yup.string().nullable(),
     }),
     onSubmit: async (values) => {
       const formData = new FormData();
@@ -122,6 +126,10 @@ export default function Setting() {
         google_analytics_id: setting.google_analytics_id || "",
         google_tag_manager_id: setting.google_tag_manager_id || "",
         facebook_pixel_id: setting.facebook_pixel_id || "",
+        delivery_charge_inside_dhaka:
+          setting.delivery_charge_inside_dhaka || "0",
+        delivery_charge_outside_dhaka:
+          setting.delivery_charge_outside_dhaka || "0",
         logo: null,
         favicon: null,
       });
@@ -404,6 +412,25 @@ export default function Setting() {
                 label="Facebook Pixel ID"
                 name="facebook_pixel_id"
                 placeholder="XXXXXXXXXXXXXXX"
+                formik={formik}
+              />
+            </div>
+          </Card>
+
+          {/* Delivery Charge */}
+          <Card title="Delivery Charge" className="shadow-sm">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <FormInput
+                label="Inside Dhaka"
+                name="delivery_charge_inside_dhaka"
+                placeholder="Enter delivery charge for inside Dhaka"
+                formik={formik}
+              />
+
+              <FormInput
+                label="Outside Dhaka"
+                name="delivery_charge_outside_dhaka"
+                placeholder="Enter delivery charge for outside Dhaka"
                 formik={formik}
               />
             </div>

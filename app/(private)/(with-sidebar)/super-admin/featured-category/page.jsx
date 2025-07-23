@@ -162,17 +162,6 @@ export default function FeaturedCategory() {
       render: (_text, record) => (
         <div className="space-y-2">
           <div className="flex items-center space-x-3">
-            {record.banner_url && (
-              <Image
-                src={record.banner_url}
-                alt={record.title}
-                width={120}
-                height={72}
-                className="h-12 w-auto rounded object-cover lg:h-10"
-                placeholder="blur"
-                blurDataURL={record.banner_url}
-              />
-            )}
             <div>
               <h3 className="font-medium max-lg:line-clamp-1">
                 {record.title}
@@ -206,7 +195,7 @@ export default function FeaturedCategory() {
       title: "Banner",
       key: "banner_url",
       render: (_text, record) => (
-        <div className="text-center">
+        <div className="flex justify-center text-center">
           {record.banner_url ? (
             <Image
               src={record.banner_url}

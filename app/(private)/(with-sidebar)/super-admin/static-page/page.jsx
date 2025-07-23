@@ -22,7 +22,7 @@ const items = [
 const kindLabels = {
   ABOUT_US: "About Us",
   PRIVACY_POLICY: "Privacy Policy",
-  TERMS_AND_CONDITIONS: "Terms and Conditions",
+  SHIPPING_INFORMATION: "Shipping Information",
 };
 
 // Helper function to strip HTML tags and truncate text
