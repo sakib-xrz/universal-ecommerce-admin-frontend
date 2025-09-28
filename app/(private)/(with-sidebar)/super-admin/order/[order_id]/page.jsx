@@ -32,6 +32,8 @@ import { formatText } from "@/utils";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useUpdatePaymentStatusMutation } from "@/redux/api/paymentApi";
+import CreatePathaoOrderModal from "@/components/pathao/CreatePathaoOrderModal";
+import { ParcelDetailsModal } from "../../../_components/ParcelDetailsModal";
 
 export default function OrderDetails({ params }) {
   const orderId = params.order_id;
@@ -39,6 +41,7 @@ export default function OrderDetails({ params }) {
   const [openEdit, setOpenEdit] = useState(false);
   const [editableOrderId, setEditableOrderId] = useState(null);
   const [editableQuantity, setEditableQuantity] = useState(null);
+  const [isPathaoModalVisible, setIsPathaoModalVisible] = useState(false);
 
   const [
     updateOrderItemQuantity,
@@ -81,7 +84,7 @@ export default function OrderDetails({ params }) {
     },
   ];
 
-  const { data, isLoading } = useGetSingleOrderQuery(orderId, {
+  const { data, isLoading, refetch } = useGetSingleOrderQuery(orderId, {
     skip: !orderId,
   });
 
@@ -289,8 +292,15 @@ export default function OrderDetails({ params }) {
   return (
     <div className="space-y-5">
       <Breadcrumb items={items} />
+      <TitleWithButton
+        title="Order Details"
+        buttonText={
+          order?.pathao_order ? "View Parcel Details" : "Create Pathao Order"
+        }
+        onClick={() => setIsPathaoModalVisible(true)}
+        icon={<Truck size={16} className="text-white" />}
+      />
 
-      <TitleWithButton title="Order Details" />
       <div className="sm:rounded-md sm:bg-white sm:p-6 sm:shadow lg:p-8">
         <div className="flex gap-5 max-md:flex-col md:items-center md:justify-between">
           <div>
@@ -532,6 +542,23 @@ export default function OrderDetails({ params }) {
           </div>
         </div>
       </div>
+
+      {order?.pathao_order ? (
+        <ParcelDetailsModal
+          visible={isPathaoModalVisible}
+          onClose={() => setIsPathaoModalVisible(false)}
+          pathaoOrder={order.pathao_order}
+        />
+      ) : (
+        <CreatePathaoOrderModal
+          visible={isPathaoModalVisible}
+          onClose={() => setIsPathaoModalVisible(false)}
+          orderData={order}
+          onOrderCreated={(response) => {
+            refetch();
+          }}
+        />
+      )}
     </div>
   );
 }

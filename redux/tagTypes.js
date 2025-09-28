@@ -12,6 +12,11 @@ export const tagTypes = {
   featuredCategory: "featuredCategory",
   setting: "setting",
   staticPage: "staticPage",
+  pathaoCity: "PathaoCity",
+  pathaoZone: "PathaoZone",
+  pathaoArea: "PathaoArea",
+  pathaoStore: "PathaoStore",
+  pathaoOrder: "PathaoOrder",
 };
 
 export const tagTypesList = [
@@ -28,4 +33,9 @@ export const tagTypesList = [
   tagTypes.featuredCategory,
   tagTypes.setting,
   tagTypes.staticPage,
+  tagTypes.pathaoCity,
+  tagTypes.pathaoZone,
+  tagTypes.pathaoArea,
+  tagTypes.pathaoStore,
+  tagTypes.pathaoOrder,
 ];

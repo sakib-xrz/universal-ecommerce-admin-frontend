@@ -11,6 +11,7 @@ import {
   ListTree,
   Settings,
   FileText,
+  Truck,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -100,6 +101,12 @@ export const getSidebarItems = (role) => {
       getItem("Add Static Page", "/super-admin/static-page/add"),
     ]),
     getItem("Banners", "/super-admin/banner", <Image />),
+    getItem("Pathao Courier", "pathao", <Truck />, [
+      getItem("Orders", "/super-admin/pathao/orders"),
+      getItem("Create Order", "/super-admin/pathao/orders/create"),
+      getItem("Bulk Orders", "/super-admin/pathao/orders/bulk"),
+      getItem("Price Calculator", "/super-admin/pathao/calculator"),
+    ]),
     getItem("Settings", "/super-admin/setting", <Settings />),
   ];
 
